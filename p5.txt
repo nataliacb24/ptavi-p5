@@ -80,8 +80,8 @@ En el segundo intento en el Message Header aparece una nueva informaciones Autho
  ** ¿Qué protocolo(s) se utiliza(n)? ¿Para qué sirven estos protocolos? H261(para el video) y RTP(para transmisión multimedia a tiempo real)
  ** ¿Cuál es el tamaño de paquete de los mismos? RTP --> 214 bytes; H261 --> varía algunos ejemplos: 1022, 1000, 1077, 1028, 1069..
  ** ¿Se utilizan bits de padding? (Def: Establece la anchura de algunas o todas las zonas de relleno de los elementos) No. Padding = false.
- ** ¿Cuál es la periodicidad de los paquetes que se envían?
- ** ¿Cuántos bits/segundo estamos enviando?
+ ** ¿Cuál es la periodicidad de los paquetes que se envían? en RTP es variable y el H261 es de 3600s
+ ** ¿Cuántos bits/segundo estamos enviando? 64000 b/s
 
 
 
@@ -109,15 +109,15 @@ En el segundo intento en el Message Header aparece una nueva informaciones Autho
 
 
 15. Identifica la trama donde se finaliza la conversación.
- ** ¿Qué método SIP se utiliza?
- ** ¿En qué trama(s)?
- ** ¿Por qué crees que se envía varias veces?
+ ** ¿Qué método SIP se utiliza? BYE
+ ** ¿En qué trama(s)? 924 925 927 933
+ ** ¿Por qué crees que se envía varias veces? Debido a que no recibe la respuesta de 200 OK lo reenvía hasta que le llega
 
 
 16. Finalmente, se cierra la aplicación de VozIP.
- ** ¿Por qué aparece una instrucción SIP del tipo REGISTER?
- ** ¿En qué trama sucede esto?
- ** ¿En qué se diferencia con la instrucción que se utilizó con anterioridad (al principio de la sesión)?
+ ** ¿Por qué aparece una instrucción SIP del tipo REGISTER? Aparece porque ahora el usuario quiere darse de baja
+ ** ¿En qué trama sucede esto? 950 952
+ ** ¿En qué se diferencia con la instrucción que se utilizó con anterioridad (al principio de la sesión)? que ahora expires es igual a 0 (expire=0) y en el primer REGISTRE expire estaba a 3600
 
 
 
