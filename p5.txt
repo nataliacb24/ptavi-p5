@@ -20,7 +20,8 @@ Se ha capturado una sesión SIP (archivo sip.cap.gz), que se puede abrir con Wir
 
 3. Antes de analizar las tramas, mira las estadísticas generales que aparecen en el menú de Statistics. En el apartado de jerarquía de protocolos (Protocol Hierarchy) se puede ver el porcentaje del tráfico correspondiente al protocolo TCP y UDP.
  ** ¿Cuál de los dos es mayor? ¿Es esto consistente con una aplicación que transmite en tiempo real? UDP tiene mayor porcentaje. Si UDP también transmite en tiempo real.
- ** ¿Qué otros protocolos podemos ver en la jerarquía de protocolos? Internet Control Menssage protocol
+ ** ¿Qué otros protocolos podemos ver en la jerarquía de protocolos? TCP -> HTTP e ICMP, UDP -> DNS, STUTN, SIP, RTP, RTCP; y ARP
+
 
 
 4. Observa por encima el flujo de tramas en el menú de Statistics en IO Graphs. La captura que estamos viendo incluye desde la inicialización (registro) de la aplicación hasta su finalización, con una llamada entremedias.
@@ -54,30 +55,31 @@ recibimos: 212.128.254.159; Comprobamos con el terminal haciendo ifconfig que se
  ** ¿Qué dirección IP tiene el servidor Registrar? 86.64.162.35
  ** ¿A qué puerto (del servidor Registrar) se envían los paquetes SIP? 5060
  ** ¿Qué método SIP utiliza el UA para registrarse? REGISTER
- ** Además de REGISTER, ¿qué instrucciones SIP entiende el UA? SUSCRIBE, INVITE, ACK
+ ** Además de REGISTER, ¿qué instrucciones SIP entiende el UA? INVITE, ACK, OPTTIONS, BYE, CANCEL, NOTIFY, REFER, MESSAGE
 
 
 
 [Al terminar el ejercicio es recomendable hacer commit de los ficheros modificados]
 
 9. Fijémonos en las tramas siguientes a la número 46:
- ** ¿Se registra con éxito en el primer intento?
- ** ¿Cómo sabemos si el registro se ha realizado correctamente o no?
+ ** ¿Se registra con éxito en el primer intento? No,86 manda a 192 Status: 401 Unauthorized
+ ** ¿Cómo sabemos si el registro se ha realizado correctamente o no? por que la respuesta que da es que no está autorizado, en el segundo REGISTER la respuesta que manda ya es Status: 200 OK
  ** ¿Podrías identificar las diferencias entre el primer intento y el segundo de registro? (fíjate en el tamaño de los paquetes y mira a qué se debe el cambio)
- ** ¿Cuánto es el valor del tiempo de expiración de la sesión? Indica las unidades.
+En el segundo intento en el Message Header aparece una nueva informaciones Authorized: digest username= "grex"..
+ ** ¿Cuánto es el valor del tiempo de expiración de la sesión? Indica las unidades. expires = 3600
 
 
 10. Una vez registrados, podemos efectuar una llamada. Vamos a probar con el servicio de eco de Ekiga que nos permite comprobar si nos hemos conectado correctamente. El servicio de eco tiene la dirección sip:500@ekiga.net. Veamos el INVITE de cerca.
- ** ¿Puede verse el nombre del que efectúa la llamada, así como su dirección SIP?
- ** ¿Qué es lo que contiene el cuerpo de la trama? ¿En qué formato/protocolo está?
- ** ¿Tiene éxito el primer intento? ¿Cómo lo sabes?
- ** ¿En qué se diferencia el segundo INVITE más abajo del primero? ¿A qué crees que se debe esto?
+ ** ¿Puede verse el nombre del que efectúa la llamada, así como su dirección SIP? Si, from: Gregorio-Robles <sip: grex.ekiga.net>
+ ** ¿Qué es lo que contiene el cuerpo de la trama? ¿En qué formato/protocolo está? Contiene información de propietario, informacion de conexión, tiempo, media, direccion y atributos. Session description protocol version(v) = 0 (SDP)
+ ** ¿Tiene éxito el primer intento? ¿Cómo lo sabes? No porque le está diciendo que necesita la autentificación del proxy (Proxy Authentication requiered)
+ ** ¿En qué se diferencia el segundo INVITE más abajo del primero? ¿A qué crees que se debe esto? Que en el segundo invite se incluye una cabecera nueva en message header que es proxy authorization y en el segundo ya se envia Status: 200 OK viendo así que el segundo intento es el que tiene exito
 
 
 11. Una vez conectado, estudia el intercambio de tramas.
- ** ¿Qué protocolo(s) se utiliza(n)? ¿Para qué sirven estos protocolos?
- ** ¿Cuál es el tamaño de paquete de los mismos?
- ** ¿Se utilizan bits de padding?
+ ** ¿Qué protocolo(s) se utiliza(n)? ¿Para qué sirven estos protocolos? H261(para el video) y RTP(para transmisión multimedia a tiempo real)
+ ** ¿Cuál es el tamaño de paquete de los mismos? RTP --> 214 bytes; H261 --> varía algunos ejemplos: 1022, 1000, 1077, 1028, 1069..
+ ** ¿Se utilizan bits de padding? (Def: Establece la anchura de algunas o todas las zonas de relleno de los elementos) No. Padding = false.
  ** ¿Cuál es la periodicidad de los paquetes que se envían?
  ** ¿Cuántos bits/segundo estamos enviando?
 
