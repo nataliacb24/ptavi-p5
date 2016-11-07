@@ -133,7 +133,7 @@ Se ha capturado una sesión SIP (archivo sip.cap.gz), que se puede abrir con Wir
  ** ¿Cuánto valen el delta y el jitter para el primer paquete que ha llegado?
 		delta: 1290.479; jitter: 183.096
  ** ¿Podemos saber si éste es el primer paquete que nos han enviado?
-		
+		si porque en el paquete 113 tenemos marker a True.
  ** Los valores de jitter son menores de 10ms hasta un paquete dado. ¿Cuál?
 		si hasta el 246 son menores de 10ms
  ** ¿A qué se debe el cambio tan brusco del jitter?
@@ -141,7 +141,7 @@ Se ha capturado una sesión SIP (archivo sip.cap.gz), que se puede abrir con Wir
  ** ¿Es comparable este cambio con el tiempo desde la recepción del paquete anterior? ¿Por qué?
 		si
  ** ¿Cuál es la dependencia entre el tiempo transcurrido desde el paquete anterior y el valor de jitter?
-		
+		la variabilidad de dicho reparto.
 
 
 14. En Telephony selecciona el menú VoIP calls. Verás que se lista la llamada de voz IP capturada en una ventana emergente. Selecciona esa llamada y pulsa el botón Graph.
@@ -180,15 +180,30 @@ Captura una sesión SIP de una conversación con el número SIP sip:9999@qxip.ne
 
 17. Observa las diferencias en el inicio de la conversación entre el entorno del laboratorio y el del ejercicio anterior:
  ** ¿Es necesario el uso de DNS y STUN? ¿Por qué?
+		si porque DNS te aisgna el nombre de dominio IP y STUN es para conocer nuestra IP publica
  ** ¿Son diferentes el registro y la descripción de la sesión?
+		son iguales.
 
 
 18. Identifica las diferencias existentes entre esta conversación y la conversación anterior:
  ** ¿Cuántos flujos tenemos?
+		Tenemos dos flujos
  ** ¿Cuál es su periodicidad?
+		periodicidad: 0.02 s
  ** ¿Cuánto es el valor máximo del delta y los valores medios y máximo del jitter?
+	--> Primer flujo:
+		maximo delta: 30.614
+		maximo jitter: 5.124
+		medio jitter: 3.5024
+	--> Segundo flujo:
+		maximo delta: 50.316
+		maximo jitter: 5.780
+		medio jitter: 1.608
  ** ¿Podrías reproducir la conversación desde Wireshark? ¿Cómo? Comprueba que poniendo un valor demasiado pequeño para el buffer de jitter, la conversación puede no tener la calidad necesaria.
+		si se podría, yendo a Telephony --> RTP --> Stream Analisys --> Play Streams. A medida que el jitter se va haciendo pequeño se pierden paquetes, solo se escucha lo que llega a tiempo, lo de 
+		entre medias se perdería porque habria que esperar por ello.
  ** ¿Sabrías decir qué tipo de servicio ofrece sip:9999@qxip.net?
+		Hemos contactado con music@iptel.org y nos ofrece un servicio de audio.
 
 
 
