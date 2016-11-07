@@ -22,7 +22,7 @@ Se ha capturado una sesión SIP (archivo sip.cap.gz), que se puede abrir con Wir
 
 3. Antes de analizar las tramas, mira las estadísticas generales que aparecen en el menú de Statistics. En el apartado de jerarquía de protocolos (Protocol Hierarchy) se puede ver el porcentaje del tráfico correspondiente al protocolo TCP y UDP.
  ** ¿Cuál de los dos es mayor? ¿Es esto consistente con una aplicación que transmite en tiempo real? 
-		UDP tiene mayor porcentaje. Si UDP también transmite en tiempo real.
+		UDP tiene mayor porcentaje. Si UDP también transmite en tiempo real. TCP no vale para tiempo real
  ** ¿Qué otros protocolos podemos ver en la jerarquía de protocolos? 
 		TCP -> HTTP e ICMP, UDP -> DNS, STUTN, SIP, RTP, RTCP; y ARP
 
@@ -120,18 +120,28 @@ Se ha capturado una sesión SIP (archivo sip.cap.gz), que se puede abrir con Wir
 
 12. Vamos a ver más a fondo el intercambio RTP. En Telephony hay una opción RTP. Empecemos mirando los flujos RTP.
  ** ¿Cuántos flujos hay? ¿por qué?
+		Hay dos flujos debido a que 192 está llamando desde dos puertos diferentes a 86.64
  ** ¿Cuántos paquetes se pierden?
+		No se pierden paquetes
  ** ¿Cuál es el valor máximo del delta? ¿Y qué es lo que significa el valor de delta?
+		1290.479 es el valor máximo, es la diferencia de tiempo entre el paquete anterior y el actual.
  ** ¿Cuáles son los valores de jitter (medio y máximo)? ¿Qué quiere decir eso? ¿Estamos ante una conversación de calidad?
+		maximo: 183.096/119.635; medio: 153.240/42.500
 
 
 13. Elige un paquete RTP de audio. Analiza el flujo de audio en Telephony -> RTP -> Stream Analysis.
  ** ¿Cuánto valen el delta y el jitter para el primer paquete que ha llegado?
+		delta: 1290.479; jitter: 183.096
  ** ¿Podemos saber si éste es el primer paquete que nos han enviado?
+		
  ** Los valores de jitter son menores de 10ms hasta un paquete dado. ¿Cuál?
+		si hasta el 246 son menores de 10ms
  ** ¿A qué se debe el cambio tan brusco del jitter?
+		a partir de este paquete la delta pasa a ser 0 o valores muy elevados.
  ** ¿Es comparable este cambio con el tiempo desde la recepción del paquete anterior? ¿Por qué?
+		si
  ** ¿Cuál es la dependencia entre el tiempo transcurrido desde el paquete anterior y el valor de jitter?
+		
 
 
 14. En Telephony selecciona el menú VoIP calls. Verás que se lista la llamada de voz IP capturada en una ventana emergente. Selecciona esa llamada y pulsa el botón Graph.
